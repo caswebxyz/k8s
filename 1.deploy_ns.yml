@@ -1,0 +1,14 @@
+#Creating Namespaces & Utilpods
+ku create ns alpha
+ku create ns bravo
+ku create ns charlie
+
+ku run -n alpha alphautils --image=sreeharshav/utils -l ns=alpha
+ku run -n bravo bravoutils --image=sreeharshav/utils -l ns=bravo
+ku run -n charlie charlieutils --image=sreeharshav/utils --labels ns=charlie
+
+
+ku label ns alpha nsp=alpha
+ku label ns bravo nsp=bravo
+ku label ns charlie nsp=charlie
+
