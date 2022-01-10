@@ -19,12 +19,12 @@ pipeline {
         }
         stage('Kubectl Apply Dry Run') {
             steps {
-	        sh "kubens dev"
                 sh "kubectl apply -f votingapp.yaml -o yaml --dry-run" 
             }       
         }
         stage('Kubectl Apply') {
             steps {
+	        sh "kubens dev"
                 sh "kubectl apply -f votingapp.yaml" 
             }       
         }
