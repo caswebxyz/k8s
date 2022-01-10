@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - image: postgres:9.4
+        name: postgres
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-data
+      volumes:
+      - name: db-data
+        emptyDir: {} 
+---
+# db-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: db
+  name: db
+spec:
+  type: ClusterIP
+  ports:
+  - name: "db-service"
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: db
+---
+# result-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  type: NodePort
+  ports:
+  - name: "result-service"
+    port: 5001
+    targetPort: 80
+    nodePort: 31001
+  selector:
+    app: result
+---
